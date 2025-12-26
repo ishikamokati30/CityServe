@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Shops in Selected City</h2>
+
+<form method="get" class="search-form">
+    <input type="text" name="q" placeholder="Search by shop name or category..." value="{{ request.GET.q }}">
+    {% if request.GET.category %}
+        <input type="hidden" name="category" value="{{ request.GET.category }}">
+    {% endif %}
+    <button type="submit">Search</button>
+</form>
+
+<form method="get" class="filter-form">
+    {% if request.GET.q %}
+        <input type="hidden" name="q" value="{{ request.GET.q }}">
+    {% endif %}
+    <select name="category">
+        <option value="">All</option>
+        <option value="Printing Services" {% if request.GET.category == "Printing Services" %}selected{% endif %}>Printing</option>
+        <option value="Tailoring" {% if request.GET.category == "Tailoring" %}selected{% endif %}>Tailoring</option>
+        <option value="Electronics" {% if request.GET.category == "Electronics" %}selected{% endif %}>Electronics</option>
+    </select>
+    <button type="submit">Filter</button>
+</form>
+
+{% if request.GET.q or request.GET.category %}
+    {% if city_id %}
+        <a href="{% url 'shops' city_id %}" class="clear-btn">Clear</a>
+    {% endif %}
+{% endif %}
+
+<p>{{ shops|length }} result(s) found</p>
+
+{% if shops %}
+<div class="shop-list">
+    {% for shop in shops %}
+        <div class="shop-card">
+            <h3>{{ shop.name }}</h3>
+            <p><strong>Category:</strong> {{ shop.category }}</p>
+            <p><strong>Contact:</strong> {{ shop.contact }}</p>
+            <p><strong>Address:</strong> {{ shop.address }}</p>
+
+            <p><strong>Timings:</strong> {{ shop.open_time }} – {{ shop.close_time }}</p>
+
+            {% if shop.is_open %}
+                <p style="color:green;">Open Now</p>
+            {% else %}
+                <p style="color:red;">Closed</p>
+            {% endif %}
+
+            <a href="/shop/{{ shop.id }}/" class="details-btn">View Details</a>
+        </div>
+    {% endfor %}
+</div>
+{% else %}
+    <p>No shops available in this city.</p>
+{% endif %}
+{% if p.image %}
+    <img src="{{ p.image.url }}" width="150">
+{% endif %}
+{% endblock %}

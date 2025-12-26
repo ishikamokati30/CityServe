@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>{{ shop.name }}</h2>
+<p>Contact: {{ shop.contact }}</p>
+<p><strong>Address:</strong> {{ shop.address }}</p>
+<p>Category: {{ shop.category }}</p>
+<p>Open: {{ shop.open_time }} | Close: {{ shop.close_time }}</p>
+
+<hr>
+
+<h3>Services</h3>
+{% if services %}
+<div class="services-list">
+    {% for s in services %}
+        <div class="service-card">
+            <p>
+                {{ s.name }} – ₹{{ s.price }}
+                {% if s.same_day_delivery %}
+                    <span class="badge">Same Day</span>
+                {% endif %}
+            </p>
+        </div>
+    {% endfor %}
+</div>
+{% else %}
+    <p>No services listed.</p>
+{% endif %}
+
+<hr>
+
+<h3>Products</h3>
+{% if products %}
+<div class="products-list">
+    {% for p in products %}
+        <div class="product-card">
+
+            {% if p.image %}
+                <img src="{{ p.image.url }}" width="120">
+            {% endif %}
+
+            <p><strong>{{ p.name }}</strong></p>
+            <p>Stock: {{ p.stock }}</p>
+
+            {% if p.discount_percent > 0 %}
+                <p><del>₹{{ p.price }}</del> ₹{{ p.discounted_price }}</p>
+                <span class="badge">{{ p.discount_percent }}% OFF</span>
+            {% else %}
+                <p>₹{{ p.price }}</p>
+            {% endif %}
+
+            <form method="post" action="{% url 'add_to_cart' p.id %}">
+                {% csrf_token %}
+                <button type="submit">Add to Cart</button>
+            </form>
+
+        </div>
+    {% endfor %}
+</div>
+{% else %}
+    <p>No products available.</p>
+{% endif %}
+
+{% endblock %}

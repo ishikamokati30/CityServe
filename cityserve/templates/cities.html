@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="hero">
+    <h1>Discover Local Stores in Your City</h1>
+    <p>Shop products, book services & get same-day delivery</p>
+</div>
+
+<h2>Select Your City</h2>
+<div class="city-row">
+    {% for city in cities %}
+        <a href="{% url 'shops' city.id %}" class="city-card">{{ city.name }}</a>
+    {% endfor %}
+</div>
+
+<h2 class="section-title">🔥 Top Deals</h2>
+<div class="deals-row">
+    <div class="deal-card">
+        <img src="{% static 'images/deal1.png' %}">
+        <p>Festive Wear</p>
+    </div>
+    <div class="deal-card">
+        <img src="{% static 'images/deal2.png' %}">
+        <p>Electronics</p>
+    </div>
+    <div class="deal-card">
+        <img src="{% static 'images/deal3.png' %}">
+        <p>Boutiques</p>
+    </div>
+</div>
+
+<h2 class="section-title">🎉 Offers</h2>
+<div class="offers-row">
+    <div class="deal-card">
+        <img src="{% static 'images/festival1.png' %}">
+        <p>Flat 20% OFF on any product</p>
+    </div>
+    <div class="deal-card">
+        <img src="{% static 'images/festival2.png' %}">
+        <p>Flat 70% OFF on shopping of 3000 or more</p>
+    </div>
+</div>
+
+{% endblock %}

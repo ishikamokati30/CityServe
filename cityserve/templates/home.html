@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- Hero Banner -->
+<div class="hero">
+    <h1>Discover Local Stores in Your City</h1>
+    <p>Shop products, book services & get same-day delivery</p>
+</div>
+
+<h2>Select Your City</h2>
+<div class="grid">
+{% for city in cities %}
+    <a href="{% url 'shops' city.id %}" class="card city-card">
+        <h3>{{ city.name }}</h3>
+        <p>{{ city.state }}</p>
+    </a>
+{% endfor %}
+</div>
+
+<h2>🔥 Top Deals</h2>
+<div class="grid">
+    <div class="card deal-card">
+        <img src="C:\Users\ASUS\cityserve_project\cityserve\static\images\deal1.png">
+        <h4>Mobile Accessories Sale</h4>
+        <p>Up to 30% off</p>
+    </div>
+    <div class="card deal-card">
+        <img src="C:\Users\ASUS\cityserve_project\cityserve/static/images/deal2.png">
+        <h4>Tailoring Discount</h4>
+        <p>Flat ₹200 off</p>
+    </div>
+    <div class="card deal-card">
+        <img src="C:\Users\ASUS\cityserve_project\cityserve/static/images/deal3.png">
+        <h4>Printer Supplies</h4>
+        <p>Best Prices Today</p>
+    </div>
+</div>
+
+<h2>🎉 Festival Offers</h2>
+<div class="grid">
+    <div class="card deal-card">
+        <img src="C:\Users\ASUS\cityserve_project\cityserve\static\images\festival1.png">
+        <h4>Diwali Electronics</h4>
+        <p>Festive discounts available</p>
+    </div>
+    <div class="card deal-card">
+        <img src="C:\Users\ASUS\cityserve_project\cityserve\static\images\festival2.png">
+        <h4>Wedding Season Fashion</h4>
+        <p>Trending ethnic wear</p>
+    </div>
+</div>
+
+{% endblock %}

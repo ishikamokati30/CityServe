@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>Checkout</h2>
+
+<ul>
+{% for item in cart_items %}
+    <li>{{ item.product.name }} x {{ item.quantity }} = ₹{{ item.total_price }}</li>
+{% endfor %}
+</ul>
+
+<p><strong>Total: ₹{{ total }}</strong></p>
+
+<form method="post">
+{% csrf_token %}
+
+<label>Delivery Option:</label>
+<select name="delivery_option">
+    <option value="2 hours">Deliver in 2 hours</option>
+    <option value="today">Deliver Today</option>
+    <option value="tomorrow">Deliver Tomorrow</option>
+</select>
+
+<label>Payment Mode:</label>
+<select name="payment_mode">
+    <option value="COD">Cash on Delivery</option>
+    <option value="ONLINE">Online Payment</option>
+</select>
+
+<button type="submit">Place Order</button>
+</form>
+
+{% endblock %}

@@ -1,0 +1,122 @@
+/* ===== RESET ===== */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: #f9f9f9;
+    color: #333;
+}
+
+/* ===== HEADER ===== */
+header {
+    background: #2c3e50;
+    color: #fff;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header .logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+header nav a {
+    color: #fff;
+    text-decoration: none;
+    margin-left: 20px;
+}
+
+/* ===== MAIN ===== */
+main {
+    padding: 30px;
+}
+
+footer {
+    text-align: center;
+    padding: 15px;
+    background: #2c3e50;
+    color: #fff;
+    margin-top: 40px;
+}
+
+
+.hero {
+    background: linear-gradient(to right, #a02020, #e08a21);
+    color: white;
+    padding: 60px 30px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    text-align: center;
+    font-size: 25px;
+}
+
+.section-title {
+    margin: 40px 0 15px;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+
+.city-row {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+}
+
+.city-card {
+    min-width: 120px;
+    padding: 12px 18px;
+    background: #bd7312;
+    color: white;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: bold;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: 0.3s;
+}
+
+.city-card:hover {
+    background: #4a6307;
+}
+
+.deals-row,
+.offers-row {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    padding-bottom: 15px;
+}
+
+.deal-card {
+    background: white;
+    border-radius: 12px;
+    width: 340px;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    text-align: center;
+    overflow: hidden;
+}
+
+.deal-card img {
+    width: 140%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.deal-card h4 {
+    margin: 10px 0 5px;
+}
+
+.deal-card p {
+    padding-bottom: 12px;
+    margin: 0;
+    font-size: 20px;
+    color: #555;
+}
