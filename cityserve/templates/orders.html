@@ -1,14 +1,24 @@
 {% extends 'base.html' %}
+
+{% block title %}Orders | CityServe{% endblock %}
+
 {% block content %}
-<h2>My Orders</h2>
-{% for order in orders %}
-    <div class="order-card">
-        <p>Order #{{ order.id }}</p>
-        <p>Status: {{ order.get_status_display }}</p>
-        <p>Total: ₹{{ order.total }}</p>
-        <a href="{% url 'order_detail' order.id %}">Track Order</a>
-    </div>
-{% empty %}
-    <p>No orders yet.</p>
-{% endfor %}
+<section class="hero-card">
+    <h1>Your Orders</h1>
+</section>
+
+<section class="stack-list">
+    {% for order in orders %}
+        <a class="card" href="{% url 'order_detail' order.id %}">
+            <h2>Order #{{ order.id }}</h2>
+            <p>Status: {{ order.get_status_display }}</p>
+            <p>Total: Rs. {{ order.total }}</p>
+            <p>Placed on: {{ order.created_at }}</p>
+        </a>
+    {% empty %}
+        <div class="card">
+            <p>No orders found.</p>
+        </div>
+    {% endfor %}
+</section>
 {% endblock %}

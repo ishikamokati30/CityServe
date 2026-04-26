@@ -1,64 +1,64 @@
 {% extends 'base.html' %}
 
+{% block title %}{{ shop.name }} | CityServe{% endblock %}
+
 {% block content %}
-<h2>{{ shop.name }}</h2>
-<p>Contact: {{ shop.contact }}</p>
-<p><strong>Address:</strong> {{ shop.address }}</p>
-<p>Category: {{ shop.category }}</p>
-<p>Open: {{ shop.open_time }} | Close: {{ shop.close_time }}</p>
+<section class="hero-card">
+    <h1>{{ shop.name }}</h1>
+    <p>{{ shop.category }}</p>
+    {% if shop.address %}
+        <p>{{ shop.address }}</p>
+    {% endif %}
+    <p>Contact: {{ shop.contact }}</p>
+</section>
 
-<hr>
-
-<h3>Services</h3>
-{% if services %}
-<div class="services-list">
-    {% for s in services %}
-        <div class="service-card">
-            <p>
-                {{ s.name }} – ₹{{ s.price }}
-                {% if s.same_day_delivery %}
-                    <span class="badge">Same Day</span>
-                {% endif %}
-            </p>
+<section class="split-layout">
+    <div>
+        <h2>Products</h2>
+        <div class="stack-list">
+            {% for product in products %}
+                <div class="card product-card">
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                    {% endif %}
+                    <div>
+                        <h3>{{ product.name }}</h3>
+                        {% if product.discount_percent %}
+                            <p><span class="price-current">Rs. {{ product.discounted_price }}</span> <span class="price-old">Rs. {{ product.price }}</span></p>
+                        {% else %}
+                            <p class="price-current">Rs. {{ product.price }}</p>
+                        {% endif %}
+                        <p>Stock: {{ product.stock }}</p>
+                        {% if user.is_authenticated %}
+                            <a class="button" href="{% url 'add_to_cart' product.id %}">Add to Cart</a>
+                        {% else %}
+                            <a class="button button-secondary" href="{% url 'login' %}">Login to Order</a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% empty %}
+                <div class="card">
+                    <p>No products available.</p>
+                </div>
+            {% endfor %}
         </div>
-    {% endfor %}
-</div>
-{% else %}
-    <p>No services listed.</p>
-{% endif %}
+    </div>
 
-<hr>
-
-<h3>Products</h3>
-{% if products %}
-<div class="products-list">
-    {% for p in products %}
-        <div class="product-card">
-
-            {% if p.image %}
-                <img src="{{ p.image.url }}" width="120">
-            {% endif %}
-
-            <p><strong>{{ p.name }}</strong></p>
-            <p>Stock: {{ p.stock }}</p>
-
-            {% if p.discount_percent > 0 %}
-                <p><del>₹{{ p.price }}</del> ₹{{ p.discounted_price }}</p>
-                <span class="badge">{{ p.discount_percent }}% OFF</span>
-            {% else %}
-                <p>₹{{ p.price }}</p>
-            {% endif %}
-
-            <form method="post" action="{% url 'add_to_cart' p.id %}">
-                {% csrf_token %}
-                <button type="submit">Add to Cart</button>
-            </form>
-
+    <div>
+        <h2>Services</h2>
+        <div class="stack-list">
+            {% for service in services %}
+                <div class="card">
+                    <h3>{{ service.name }}</h3>
+                    <p>Rs. {{ service.price }}</p>
+                    <p>{% if service.same_day_delivery %}Same day delivery available{% else %}Standard service{% endif %}</p>
+                </div>
+            {% empty %}
+                <div class="card">
+                    <p>No services available.</p>
+                </div>
+            {% endfor %}
         </div>
-    {% endfor %}
-</div>
-{% else %}
-    <p>No products available.</p>
-{% endif %}
-
+    </div>
+</section>
 {% endblock %}

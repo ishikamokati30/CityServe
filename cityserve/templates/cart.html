@@ -1,42 +1,51 @@
 {% extends 'base.html' %}
+
+{% block title %}Cart | CityServe{% endblock %}
+
 {% block content %}
+<section class="hero-card">
+    <h1>Your Cart</h1>
+    <p>Review quantities, apply a coupon, and continue to checkout.</p>
+</section>
 
-<h2>Your Cart</h2>
+<div class="split-layout">
+    <section class="stack-list">
+        {% for item in cart_items %}
+            <div class="card cart-item">
+                <div>
+                    <h2>{{ item.product.name }}</h2>
+                    <p>Price: Rs. {{ item.product.discounted_price }}</p>
+                    <p>Total: Rs. {{ item.total_price }}</p>
+                </div>
+                <div class="cart-actions">
+                    <form method="post" action="{% url 'update_quantity' item.id %}">
+                        {% csrf_token %}
+                        <input type="number" min="1" name="quantity" value="{{ item.quantity }}">
+                        <button type="submit">Update</button>
+                    </form>
+                    <a class="button button-secondary" href="{% url 'remove_from_cart' item.id %}">Remove</a>
+                </div>
+            </div>
+        {% empty %}
+            <div class="card">
+                <p>Your cart is empty.</p>
+            </div>
+        {% endfor %}
+    </section>
 
-{% if cart_items %}
-<table>
-<tr><th>Product</th><th>Qty</th><th>Price</th><th>Total</th><th>Action</th></tr>
-{% for item in cart_items %}
-<tr>
-    <td>{{ item.product.name }}</td>
-    <td>
-        <form method="post" action="{% url 'update_quantity' item.id %}">
-            {% csrf_token %}
-            <input type="number" name="quantity" value="{{ item.quantity }}" min="1">
-            <button type="submit">Update</button>
+    <aside class="card summary-card">
+        <h2>Order Summary</h2>
+        <form method="get" class="coupon-form">
+            <input type="text" name="coupon" value="{{ coupon_code }}" placeholder="Coupon code">
+            <button type="submit">Apply</button>
         </form>
-    </td>
-    <td>₹{{ item.product.discounted_price }}</td>
-    <td>₹{{ item.total_price }}</td>
-    <td><a href="{% url 'remove_from_cart' item.id %}">Remove</a></td>
-</tr>
-{% endfor %}
-</table>
-
-<form method="get">
-    <input type="text" name="coupon" placeholder="Enter coupon code" value="{{ coupon_code }}">
-    <button type="submit">Apply</button>
-</form>
-
-<p>Subtotal: ₹{{ subtotal }}</p>
-<p>Discount: ₹{{ discount }}</p>
-<p>Delivery: ₹{{ delivery_charge }}</p>
-<h3>Total: ₹{{ total }}</h3>
-
-<a href="{% url 'checkout' %}">Proceed to Checkout</a>
-
-{% else %}
-<p>Your cart is empty.</p>
-{% endif %}
-
+        <p>Subtotal: Rs. {{ subtotal }}</p>
+        <p>Discount: Rs. {{ discount }}</p>
+        <p>Delivery: Rs. {{ delivery_charge }}</p>
+        <p class="summary-total">Total: Rs. {{ total }}</p>
+        {% if cart_items %}
+            <a class="button" href="{% url 'checkout' %}{% if coupon_code %}?coupon={{ coupon_code }}{% endif %}">Proceed to Checkout</a>
+        {% endif %}
+    </aside>
+</div>
 {% endblock %}

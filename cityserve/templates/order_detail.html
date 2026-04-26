@@ -1,14 +1,21 @@
 {% extends 'base.html' %}
+
+{% block title %}Order #{{ order.id }} | CityServe{% endblock %}
+
 {% block content %}
-<h2>Order #{{ order.id }}</h2>
-<p>Status: <strong>{{ order.get_status_display }}</strong></p>
-<p>Placed on: {{ order.created_at }}</p>
+<section class="hero-card">
+    <h1>Order #{{ order.id }}</h1>
+    <p>Status: {{ order.get_status_display }}</p>
+    <p>Total: Rs. {{ order.total }}</p>
+</section>
 
-<ul>
-{% for item in order.items.all %}
-    <li>{{ item.product.name }} × {{ item.quantity }}</li>
-{% endfor %}
-</ul>
-
-<p>Total Paid: ₹{{ order.total }}</p>
+<section class="stack-list">
+    {% for item in order.items.all %}
+        <div class="card">
+            <h2>{{ item.product.name }}</h2>
+            <p>Quantity: {{ item.quantity }}</p>
+            <p>Total: Rs. {{ item.total_price }}</p>
+        </div>
+    {% endfor %}
+</section>
 {% endblock %}

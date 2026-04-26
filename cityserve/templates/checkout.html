@@ -1,33 +1,47 @@
 {% extends 'base.html' %}
+
+{% block title %}Checkout | CityServe{% endblock %}
+
 {% block content %}
+<section class="hero-card">
+    <h1>Checkout</h1>
+    <p>Confirm your order details and place the order.</p>
+</section>
 
-<h2>Checkout</h2>
+<div class="split-layout">
+    <section class="stack-list">
+        {% for item in cart_items %}
+            <div class="card">
+                <h2>{{ item.product.name }}</h2>
+                <p>Quantity: {{ item.quantity }}</p>
+                <p>Total: Rs. {{ item.total_price }}</p>
+            </div>
+        {% endfor %}
+    </section>
 
-<ul>
-{% for item in cart_items %}
-    <li>{{ item.product.name }} x {{ item.quantity }} = ₹{{ item.total_price }}</li>
-{% endfor %}
-</ul>
+    <aside class="card summary-card">
+        <h2>Place Order</h2>
+        <p>Subtotal: Rs. {{ subtotal }}</p>
+        <p>Discount: Rs. {{ discount }}</p>
+        <p>Delivery: Rs. {{ delivery_charge }}</p>
+        <p class="summary-total">Total: Rs. {{ total }}</p>
 
-<p><strong>Total: ₹{{ total }}</strong></p>
+        <form method="post" class="stack-form">
+            {% csrf_token %}
+            <label for="delivery_option">Delivery Option</label>
+            <select id="delivery_option" name="delivery_option" required>
+                <option value="home_delivery">Home Delivery</option>
+                <option value="pickup">Store Pickup</option>
+            </select>
 
-<form method="post">
-{% csrf_token %}
+            <label for="payment_mode">Payment Mode</label>
+            <select id="payment_mode" name="payment_mode" required>
+                <option value="cod">Cash on Delivery</option>
+                <option value="online">Online Payment</option>
+            </select>
 
-<label>Delivery Option:</label>
-<select name="delivery_option">
-    <option value="2 hours">Deliver in 2 hours</option>
-    <option value="today">Deliver Today</option>
-    <option value="tomorrow">Deliver Tomorrow</option>
-</select>
-
-<label>Payment Mode:</label>
-<select name="payment_mode">
-    <option value="COD">Cash on Delivery</option>
-    <option value="ONLINE">Online Payment</option>
-</select>
-
-<button type="submit">Place Order</button>
-</form>
-
+            <button type="submit">Place Order</button>
+        </form>
+    </aside>
+</div>
 {% endblock %}

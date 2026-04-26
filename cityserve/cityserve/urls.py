@@ -31,6 +31,7 @@ from orders.views import (
     order_detail,
 )
 from django.contrib.auth import views as auth_views
+from users.views import user_logout, login_redirect, owner_dashboard
 
 
 urlpatterns = [
@@ -39,7 +40,8 @@ urlpatterns = [
 
     path('shops/<int:city_id>/', shops_by_city, name='shops'),
     path('shop/<int:shop_id>/', shop_detail, name='shop_detail'),
-
+    path('logout/', user_logout, name='logout'),
+ 
     path('add-to-cart/<int:product_id>/', add_to_cart, name='add_to_cart'),
     path('cart/', cart_view, name='cart'),
     path('checkout/', checkout, name='checkout'),
@@ -52,7 +54,9 @@ urlpatterns = [
     path('orders/<int:order_id>/', order_detail, name='order_detail'),
 
     path('login/', auth_views.LoginView.as_view(template_name='login.html'), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('owner/login/', auth_views.LoginView.as_view(template_name='login_owner.html'), name='owner_login'),
+    path('owner/dashboard/', owner_dashboard, name='owner_dashboard'),
+    path('redirect/', login_redirect, name='login_redirect'),
 ]
 
 if settings.DEBUG:
